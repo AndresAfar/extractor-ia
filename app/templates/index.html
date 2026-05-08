@@ -32,13 +32,13 @@
     
     <div class="bg-white rounded-2xl border divide-y">
       {% for inv in invoices %}
-      <div class="p-4 text-sm">
+      <div class="p-4 text-sm hover:bg-slate-50 cursor-pointer transition group" hx-get="/invoice/{{ inv.id }}" hx-target="#result" hx-swap="innerHTML">
         <div class="flex justify-between">
-          <span class="font-medium truncate">{{ inv.filename }}</span>
+          <span class="font-medium truncate group-hover:text-orange-600">{{ inv.filename }}</span>
           <span class="text-slate-500">{{ inv.fecha_emision }}</span>
         </div>
         <div class="text-orange-700 font-semibold mt-1">
-          {{ inv.moneda }} {{ "{:,.0f}".format(inv.valor_total) }}
+          {{ inv.moneda | default('COP') }} {{ "{:,.0f}".format(inv.valor_total or 0) }}
         </div>
       </div>
       {% else %}

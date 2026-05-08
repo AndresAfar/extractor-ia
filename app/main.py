@@ -41,6 +41,22 @@ async def index(request: Request, db: AsyncSession = Depends(get_session)):
             "invoices": invoices
         }
     )
+    
+@app.get("/invoice/{invoice_id}", response_class=HTMLResponse)
+async def get_invoice(
+    request: Request, 
+    invoice_id: int, 
+    db: AsyncSession = Depends(get_session)
+):
+    invoice = await db.get(Invoice, invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Factura no encontrada")
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="partials/invoice_card.html",
+        context={"request": request, "invoice": invoice}
+    )
 
 @app.post("/extract", response_class=HTMLResponse)
 async def extract(
