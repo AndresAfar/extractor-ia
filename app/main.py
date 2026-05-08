@@ -74,8 +74,9 @@ async def extract(
     # Devuelve el partial — HTMX lo inserta en el DOM
     return templates.TemplateResponse(
         request=request,
-        name="index.html",
+        name="partials/invoice_card.html",
         context={
-            "invoices": invoice
+            "invoice": invoice,
+            "request": request,
         }
     )
