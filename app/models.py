@@ -12,5 +12,5 @@ class Invoice(SQLModel, table=True):
     proveedor: str | None = None
     nit: str | None = None
     moneda: str = "COP"
-    metadata: dict | None = Field(default=None, sa_column=Column(JSON))
+    info_adicional: dict | None = Field(default=None, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=datetime.utcnow)
