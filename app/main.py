@@ -42,3 +42,24 @@ async def index(request: Request, db: AsyncSession = Depends(get_session)):
         }
     )
 
+@app.post("/extract", response_class=HTMLResponse)
+async def extract(
+    request: Request,
+    file: UploadFile = File(...),
+    db: AsyncSession = Depends(get_session),
+):
+    if file.content_type not in ALLOWED:
+        raise HTTPException(415, "Solo se aceptan PDF o imágenes (JPG/PNG/WEBP)")
+
+    data = await extract_from_document(await file.read(), file.content_type)
+    invoice = Invoice(filename=file.filename, **data.model_dump())
+    db.add(invoice); await db.commit(); await db.refresh(invoice)
+
+    # Devuelve el partial — HTMX lo inserta en el DOM
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "invoices": invoice
+        }
+    )
