@@ -29,10 +29,16 @@ async def extract_from_document(file_bytes: bytes, media_type: str) -> InvoiceDa
                     "Actúa como un extractor de datos de facturas. Devuelve los datos clave de esta factura de servicios. "
                     "La fecha de emisión debe ir en formato YYYY-MM-DD. "
                     "El valor total debe ser solo el número, sin símbolos de moneda."
+                    "Cualquier dato adicional como fecha de vencimiento, número de medidor (si es servicios públicos), o periodos de consumo, agrégalos en el campo 'metadata'."
                 },
             ],
         }],
     )
 
-    tool_use = next(b for b in msg.content if b.type == "tool_use")
-    return InvoiceData(**tool_use.input)
+    # Validador en InvoiceData para limpiar string antes de conversion
+    try:
+        tool_use = next(b for b in msg.content if b.type == "tool_use")
+        return InvoiceData.model_validate(tool_use.input)
+    except Exception as e:
+        print(f"Error validando datos de la factura: {e}")
+        raise
