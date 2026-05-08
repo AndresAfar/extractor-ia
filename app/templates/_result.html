@@ -1,0 +1,32 @@
+<div class="bg-white border rounded-2xl p-6">
+  <div class="flex items-center gap-2 mb-4">
+    <span class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
+      ✓ Extraído
+    </span>
+    <span class="text-xs text-slate-500">{{ invoice.filename }}</span>
+  </div>
+  <dl class="grid grid-cols-2 gap-y-3 text-sm">
+    <dt class="text-slate-500">Fecha emisión</dt>
+    <dd class="font-medium">{{ invoice.fecha_emision }}</dd>
+
+    <dt class="text-slate-500">Valor total</dt>
+    <dd class="font-semibold text-orange-700">
+      {{ invoice.moneda }} {{ "{:,.0f}".format(invoice.valor_total) }}
+    </dd>
+
+    {% if invoice.numero_factura %}
+    <dt class="text-slate-500">N° factura</dt>
+    <dd class="font-medium">{{ invoice.numero_factura }}</dd>
+    {% endif %}
+
+    {% if invoice.proveedor %}
+    <dt class="text-slate-500">Proveedor</dt>
+    <dd class="font-medium">{{ invoice.proveedor }}</dd>
+    {% endif %}
+
+    {% if invoice.nit %}
+    <dt class="text-slate-500">NIT</dt>
+    <dd class="font-medium">{{ invoice.nit }}</dd>
+    {% endif %}
+  </dl>
+</div>
