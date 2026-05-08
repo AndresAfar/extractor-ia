@@ -9,3 +9,4 @@ class InvoiceData(BaseModel):
     proveedor: str | None = None
     nit: str | None = None
     moneda: str = Field(default="COP")
+    metadata: dict | None = Field(default=None, description="Cualquier otro dato relevante extraído de la factura")

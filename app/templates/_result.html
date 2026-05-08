@@ -28,5 +28,12 @@
     <dt class="text-slate-500">NIT</dt>
     <dd class="font-medium">{{ invoice.nit }}</dd>
     {% endif %}
+
+    {% if invoice.metadata %}
+    {% for key, value in invoice.metadata.items() %}
+    <dt class="text-slate-500">{{ key }}</dt>
+    <dd class="font-medium">{{ value }}</dd>
+    {% endfor %}
+    {% endif %}
   </dl>
 </div>
